@@ -9,6 +9,12 @@ from pymongo import MongoClient
 from pprint import pprint
 
 
+def find_vacancies_by_salary(salary, collection):
+    for doc in collection.find({'$or': [{'minimum salary': {'$gt': salary}},
+                                        {'maximum salary': {'$gt': salary}}]}):
+        pprint(doc)
+
+
 client = MongoClient('127.0.0.1', 27017)
 db = client['vacancies']
 engineers = db.engineers
@@ -22,6 +28,4 @@ while True:
     except:
         user_salary = input('Вы ввели не число. Введите число: ')
 
-for doc in engineers.find({'$or': [{'minimum salary': {'$gt': user_salary}},
-                                    {'maximum salary': {'$gt': user_salary}}]}):
-    pprint(doc)
+find_vacancies_by_salary(user_salary, engineers)
