@@ -45,18 +45,17 @@ for i in range(len(dates)):
 
 #объединение списков
 zipped_data = list(zip(links, names, dates))
-id_count = 0
 
 #заполнение словаря перед для добавленияв БД
 for i in range(len(zipped_data)):
-    news_data = {'_id': id_count,
+    news_data = {'_id': i,
                  'link': zipped_data[i][0],
                  'name': zipped_data[i][1],
                  'date': zipped_data[i][2],
                  'source': url
                  }
     # заполнение БД
-    news.update_one({'_id': id_count}, {'$set': news_data}, upsert=True)
+    news.update_one({'_id': i}, {'$set': news_data}, upsert=True)
 
 for doc in news.find({}):
     pprint(doc)
